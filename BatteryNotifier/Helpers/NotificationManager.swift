@@ -58,7 +58,6 @@
 //    }
 //}
 
-
 import UserNotifications
 import AppKit
 
@@ -132,21 +131,15 @@ class NotificationManager {
             alert.alertStyle = .warning
             alert.addButton(withTitle: "OK")
             
-            // Make the alert appear on top of all other windows
-            if let window = NSApplication.shared.keyWindow ?? NSApplication.shared.windows.first {
-                alert.beginSheetModal(for: window) { _ in
-                    // Alert dismissed
-                }
-            } else {
-                // No window available, show modal alert
-                alert.runModal()
-            }
-            
-            // Play sound
+            // Play sound before showing alert
             self?.soundManager.playNotificationSound()
             
             // Make the app temporarily active to ensure visibility
             NSApplication.shared.activate(ignoringOtherApps: true)
+            
+            // Use runModal() for system-centered alert positioning
+            // This creates a modal alert that appears centered on screen like system dialogs
+            alert.runModal()
         }
     }
 }
