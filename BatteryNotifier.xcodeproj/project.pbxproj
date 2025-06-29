@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0FBBE6FA2E104F6400F9716B /* info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0FBBE6F92E104F6400F9716B /* info.plist */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		0FBBE6E72E10458200F9716B /* BatteryNotifier.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BatteryNotifier.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FBBE6F92E104F6400F9716B /* info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +37,7 @@
 		0FBBE6DE2E10458200F9716B = {
 			isa = PBXGroup;
 			children = (
+				0FBBE6F92E104F6400F9716B /* info.plist */,
 				0FBBE6E92E10458200F9716B /* BatteryNotifier */,
 				0FBBE6E82E10458200F9716B /* Products */,
 			);
@@ -109,6 +115,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FBBE6FA2E104F6400F9716B /* info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
