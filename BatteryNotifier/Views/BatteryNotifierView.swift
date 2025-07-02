@@ -95,29 +95,79 @@ struct BatteryNotifierView: View {
     }
     
     private var statusSection: some View {
-        Section(header: Text("Status")) {
-            if let batteryInfo = batteryManager.batteryInfo {
-                Text("Battery: \(batteryInfo.displayString)")
-                Text(batteryInfo.health.displayString)
-            } else if let errorMessage = batteryManager.errorMessage {
-                Text("Battery: \(errorMessage)")
-                    .foregroundColor(.secondary)
-            } else {
-                Text("Battery: Loading...")
-                    .foregroundColor(.secondary)
+        Section(header: Text("Battery Status")) {
+            VStack(alignment: .leading, spacing: 8) {
+                if let batteryInfo = batteryManager.batteryInfo {
+                    // Battery level and charging status
+                    HStack {
+                        Text("🔋 Level:")
+                            .fontWeight(.medium)
+                        Text(batteryInfo.displayString)
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Divider()
+                    
+                    // Battery health information
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("📊 Health Information:")
+                            .fontWeight(.medium)
+                            .padding(.bottom, 2)
+                        
+                        // Display health info with proper formatting
+                        let healthLines = batteryInfo.health.displayString.components(separatedBy: "\n")
+                        ForEach(healthLines.indices, id: \.self) { index in
+                            Text(healthLines[index])
+                                .font(.system(size: 13, design: .monospaced))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                } else if let errorMessage = batteryManager.errorMessage {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle")
+                            .foregroundColor(.orange)
+                        Text("Battery: \(errorMessage)")
+                            .foregroundColor(.secondary)
+                    }
+                } else {
+                    HStack {
+                        ProgressView()
+                            .scaleEffect(0.8)
+                        Text("Battery: Loading...")
+                            .foregroundColor(.secondary)
+                    }
+                }
             }
             
-            Text("Monitoring your battery health.")
+            Text("Monitoring your battery health and charge levels.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .padding(.top, 8)
         }
     }
     
     private var testSection: some View {
         Section {
-            Button("🔔 Test Notification") {
-                NotificationManager.shared.notify("🔔 This is a manual test alert from BatteryNotifier.")
+            VStack(spacing: 8) {
+                Button("🔔 Test Notification") {
+                    NotificationManager.shared.notify("🔔 This is a manual test alert from BatteryNotifier.", isImportant: true)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.vertical, 6)
+                
+                Button("🔄 Refresh Battery Info") {
+                    Task {
+                        await MainActor.run {
+                            // Force refresh by stopping and starting monitoring
+                            batteryManager.stopMonitoring()
+                            batteryManager.startMonitoring()
+                        }
+                    }
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.vertical, 6)
             }
-            .buttonStyle(PlainButtonStyle())
-            .padding(.vertical, 6)
         }
     }
     
